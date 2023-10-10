@@ -10,7 +10,6 @@ import tn.esprit.devops_project.entities.ProductCategory;
 import tn.esprit.devops_project.entities.Stock;
 import tn.esprit.devops_project.repositories.ProductRepository;
 import tn.esprit.devops_project.repositories.StockRepository;
-import tn.esprit.devops_project.services.ProductServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +57,6 @@ class ProductServiceImplTest {
 
     @Test
     void retrieveProduct() {
-        // Arrange
         Long productIdToRetrieve = 1L;
         Product expectedProduct = new Product(
                 productIdToRetrieve,
@@ -124,7 +122,7 @@ class ProductServiceImplTest {
 
     @Test
     void retreiveProductStock() {
-        Long stockIdToRetrieve = 1L; // Replace with the actual stock ID
+        Long stockIdToRetrieve = 1L;
         List<Product> expectedProducts = new ArrayList<>();
         expectedProducts.add(new Product(
                 null,
