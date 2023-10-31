@@ -17,10 +17,10 @@ import static org.mockito.Mockito.*;
 class ActivitySectorImplTest {
 
     @InjectMocks
-    private  activitySectorService;
+    private ActivitySectorImpl activitySectorService;
 
     @Mock
-    private ActivitySeActivitySectorImplctorRepository activitySectorRepository;
+    private ActivitySectorRepository activitySectorRepository;
 
     @BeforeEach
     public void setUp () {
