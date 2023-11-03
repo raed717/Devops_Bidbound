@@ -2,9 +2,13 @@ package tn.esprit.devops_project.services;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
+
 import tn.esprit.devops_project.entities.Supplier;
 import tn.esprit.devops_project.entities.SupplierCategory;
 import tn.esprit.devops_project.repositories.SupplierRepository;
@@ -15,7 +19,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
+@ExtendWith(MockitoExtension.class)
 class SupplierServiceImplTest {
 
     @InjectMocks
@@ -87,8 +91,10 @@ class SupplierServiceImplTest {
                 null // Set activitySectors to null or initialize them if needed
         );
 
-        when(supplierRepository.findById(supplierIdToUpdate)).thenReturn(Optional.of(existingSupplier));
-        when(supplierRepository.save(updatedSupplier)).thenReturn(updatedSupplier);
+        // Use lenient for unnecessary stubbing
+        lenient().when(supplierRepository.findById(supplierIdToUpdate)).thenReturn(Optional.of(existingSupplier));
+        lenient().when(supplierRepository.save(updatedSupplier)).thenReturn(updatedSupplier);
+
 
         // Act
         Supplier result = supplierService.updateSupplier(updatedSupplier);
