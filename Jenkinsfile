@@ -1,7 +1,12 @@
 pipeline {
     agent any
-    cleanWs()
+
     stages {
+        stage('Clean Workspace') {
+            steps {
+                deleteDir()  // Clean the workspace
+            }
+        }
         stage('Checkout Git') {
             steps {
                 echo 'Pulling...'
