@@ -4,60 +4,56 @@ pipeline {
     stages {
         stage('Checkout Git') {
             steps {
-                script {
-                    echo 'Pulling...'
-                    git branch: 'raed', url: 'https://github.com/raed717/Devops_Bidbound.git'
-                }
+                echo 'Pulling...'
+                checkout scm
             }
         }
+
         stage('Check Maven Version') {
             steps {
-                script {
-                    def mavenVersion = sh(script: 'mvn --version', returnStatus: true)
-                    if (mavenVersion == 0) {
-                        echo 'Maven is installed. Here is the version:'
-                        sh 'mvn -version'
-                    } else {
-                        error 'Maven is not installed.'
-                    }
-                }
+                sh 'mvn -B -v'
             }
         }
-        stage('Compile') {
+
+        stage('Build and Test') {
             steps {
-                sh 'mvn compile'
+                parallel(
+                    "Compile": {
+                        sh 'mvn compile'
+                    },
+                    "Unit Tests": {
+                        sh 'mvn test'
+                    },
+                    "Integration Tests": {
+                        sh 'mvn integration-test'
+                    }
+                )
             }
         }
-        stage('MVN SONARQUBE') {
+
+        stage('Static Code Analysis') {
             steps {
                 sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=rg123717'
             }
         }
-        stage('Unit Tests') {
-            steps {
-                sh 'mvn test'
-            }
-        }
-        stage('Integration Tests') {
-            steps {
-                sh 'mvn integration-test'
-            }
-        }
-        //livrable
-        stage('artifact construction') {
+
+        stage('Package and Deploy') {
             steps {
                 sh 'mvn package'
-            }
-        }
-        stage('Deploy Nexus') {
-            steps {
                 sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8081/repository/maven-releases/'
             }
         }
+
         stage('Generate JaCoCo Coverage Report') {
             steps {
                 sh 'mvn jacoco:report'
             }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
         }
     }
 }
