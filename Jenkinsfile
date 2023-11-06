@@ -1,11 +1,12 @@
 pipeline {
     agent any
 
-     environment {
-        registryCredential = 'Docker_credential'
-    }
-
     stages {
+        stage('Clean Workspace') {
+            steps {
+                deleteDir()  // Clean the workspace
+            }
+        }
         stage('Checkout Git') {
             steps {
                 script {
