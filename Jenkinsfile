@@ -27,7 +27,6 @@ pipeline {
                 }
             }
         }
-
         stage('Compile') {
             steps {
                 sh 'mvn compile'
@@ -71,17 +70,17 @@ pipeline {
                 }
             }
         }
-
         stage('Push Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('https://registry-1.docker.io', 'Docker_credential') {
-                    docker.image('rg123717/devops_project:latest').push()}
+                    // Authenticate to Docker Hub using your credentials
+                    sh "echo \$Linq2016** | docker login -u \$rg123717 --password-stdin"
+
+                    // Push the Docker image to Docker Hub
+                    sh "docker push rg123717/devops_project:latest"
                 }
             }
         }
-
-       
         stage('Run Docker Container') {
             steps {
                 script {
