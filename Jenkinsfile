@@ -38,17 +38,28 @@
                     sh 'mvn compile'
             }
         }
+
         stage('Unit Tests') {
             steps {
                 sh 'mvn test'
             }
         }
-
+        stage('Generate JaCoCo Coverage Report') {
+             steps {
+                  sh 'mvn jacoco:report'
+                    }
+                }
+         stage('artifact construction') {
+                    steps {
+                          sh 'mvn package'
+                            }
+                        }
          stage('MVN SONARQUBE') {
             steps {
                 sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=maman'
             }
         }
+
     }
 
 
