@@ -1,6 +1,7 @@
-FROM openjdk:11
+FROM maven:3.8.4-openjdk-11-slim
+
 WORKDIR /app
 COPY ./ /app/
 RUN mvn clean package
 EXPOSE 8085
-ENTRYPOINT ["java", "-jar", "target/DevOps_Project-2.1.jar"]
+CMD ["java", "-jar", "target/DevOps_Project-2.1.jar"]
