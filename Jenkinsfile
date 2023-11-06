@@ -59,7 +59,7 @@ pipeline {
                 sh 'mvn jacoco:report'
             }
         }
-        stage('Build Docker Image') {
+        /*stage('Build Docker Image') {
             steps {
                 script {
                     sh 'docker build -t devops_project .'
@@ -73,7 +73,7 @@ pipeline {
                     sh 'docker push rg123717/devops_project:latest'
                 }
             }
-        }
+        }*/
        
         stage('Run Docker Container') {
             steps {
