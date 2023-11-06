@@ -65,8 +65,16 @@ pipeline {
                     sh 'docker build -t devops_project .'
                 }
             }
-        }       
+        }
 
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    sh 'docker push your-docker-hub-username/your-image-name:your-tag'
+                }
+            }
+        }
+       
         stage('Run Docker Container') {
             steps {
                 script {
