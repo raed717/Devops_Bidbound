@@ -59,6 +59,22 @@ pipeline {
                 sh 'mvn jacoco:report'
             }
         }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    sh 'docker build -t DevOps_Project .'
+                }
+            }
+        }       
+
+        stage('Run Docker Container') {
+            steps {
+                script {
+                    sh 'docker run -d -p 8085:8085 --name Devops_container DevOps_Project'
+                }
+            }
+        }
+
     }
     post {
         always {
