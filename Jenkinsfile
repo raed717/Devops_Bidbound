@@ -30,7 +30,7 @@
         }
          stage('Compile') {
          steps {
-                    sh 'mvn compile'
+                    sh 'mvn clean compile'
             }
         }
 
