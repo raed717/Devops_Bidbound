@@ -23,14 +23,16 @@ pipeline {
                 }
             }
         }
-        stage('Login to Docker Registry') {
-            steps {
-                script {
-                    withCredentials([usernamePassword(credentialsId: 'Docker_credential', passwordVariable: 'Linq2016**', usernameVariable: 'rg123717')]) {
-                    sh "echo \$Linq2016** | docker login -u \$rg123717 --password-stdin"}
-                }
+stage('Login to Docker Registry') {
+    steps {
+        script {
+            withCredentials([usernamePassword(credentialsId: 'Docker_credential', passwordVariable: 'Linq2016**', usernameVariable: 'rg123717')]) {
+                sh "echo \$Linq2016** | docker login -u \$rg123717 --password-stdin"
             }
         }
+    }
+}
+
 
 
         stage('Compile') {
