@@ -27,10 +27,12 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'Docker_credential', passwordVariable: 'linq2016**', usernameVariable: 'rg123717')]) {
-                    sh "echo $rg123717 | docker login -u $linq2016** --password-stdin"} 
+                    sh "echo \$linq2016** | docker login -u \$rg123717 --password-stdin"}
                 }
             }
         }
+
+
         stage('Compile') {
             steps {
                 sh 'mvn compile'
