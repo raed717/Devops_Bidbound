@@ -47,11 +47,8 @@ class ProductServiceImplTest {
 
         Stock mockStock = new Stock();
         when(stockRepository.findById(anyLong())).thenReturn(Optional.of(mockStock));
-
         when(productRepository.save(productToAdd)).thenReturn(productToAdd);
-
         Product addedProduct = productService.addProduct(productToAdd, 1L);
-
         assertEquals(productToAdd, addedProduct);
     }
 
@@ -67,9 +64,7 @@ class ProductServiceImplTest {
                 null
         );
         when(productRepository.findById(productIdToRetrieve)).thenReturn(Optional.of(expectedProduct));
-
         Product retrievedProduct = productService.retrieveProduct(productIdToRetrieve);
-
         assertEquals(expectedProduct, retrievedProduct);
     }
 
@@ -85,9 +80,7 @@ class ProductServiceImplTest {
                 null
         ));
         when(productRepository.findAll()).thenReturn(expectedProducts);
-
         List<Product> actualProducts = productService.retreiveAllProduct();
-
         assertEquals(expectedProducts.size(), actualProducts.size());
     }
 
@@ -104,19 +97,14 @@ class ProductServiceImplTest {
                 null
         ));
         when(productRepository.findByCategory(categoryToRetrieve)).thenReturn(expectedProducts);
-
         List<Product> actualProducts = productService.retrieveProductByCategory(categoryToRetrieve);
-
-
         assertEquals(expectedProducts.size(), actualProducts.size());
     }
 
     @Test
     void deleteProduct() {
         Long productIdToDelete = 1L;
-
         productService.deleteProduct(productIdToDelete);
-
         verify(productRepository, times(1)).deleteById(productIdToDelete);
     }
 
@@ -133,9 +121,7 @@ class ProductServiceImplTest {
                 null
         ));
         when(productRepository.findByStockIdStock(stockIdToRetrieve)).thenReturn(expectedProducts);
-
         List<Product> actualProducts = productService.retreiveProductStock(stockIdToRetrieve);
-
         assertEquals(expectedProducts.size(), actualProducts.size());
     }
 }
