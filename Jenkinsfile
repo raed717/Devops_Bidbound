@@ -26,13 +26,11 @@ pipeline {
         stage('Login to Docker Registry') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
-                    sh "echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin"
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'linq2016**', usernameVariable: 'rg123717')]) {
+                    sh "echo $rg123717 | docker login -u $linq2016** --password-stdin"} 
                 }
             }
         }
-        }
-
         stage('Compile') {
             steps {
                 sh 'mvn compile'
