@@ -70,7 +70,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    sh 'docker push your-docker-hub-username/your-image-name:your-tag'
+                    sh 'docker push rg123717/devops_project:latest'
                 }
             }
         }
