@@ -23,14 +23,9 @@ pipeline {
                 }
             }
         }
-        stage('build') {
-            steps {
-                sh 'mvn clean install'
-            }
-        }
         stage('Compile') {
             steps {
-                sh 'mvn compile'
+                sh 'mvn clean compile'
             }
         }
         stage('MVN SONARQUBE') {
