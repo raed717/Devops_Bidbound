@@ -28,24 +28,24 @@ pipeline {
                 sh 'mvn clean compile'
             }
         }
-        stage('MVN SONARQUBE') {
-            steps {
-                sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=rg123717'
-            }
-        }
         stage('Unit Tests') {
             steps {
                 sh 'mvn test'
             }
         }
-        stage('Integration Tests') {
-            steps {
-                sh 'mvn integration-test'
-            }
-        }
         stage('Generate JaCoCo Coverage Report') {
             steps {
                 sh 'mvn jacoco:report'
+            }
+        }
+        stage('MVN SONARQUBE') {
+            steps {
+                sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=rg123717'
+            }
+        }
+        stage('Integration Tests') {
+            steps {
+                sh 'mvn integration-test'
             }
         }
         //livrable
