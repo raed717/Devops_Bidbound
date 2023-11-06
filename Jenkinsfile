@@ -64,14 +64,6 @@ pipeline {
                 sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8081/repository/maven-releases/'
             }
         }
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    // Authenticate to Docker Hub using your credentials
-                    sh "echo \$Linq2016** | docker login -u \$rg123717 --password-stdin"
-                    sh "docker push rg123717/devops_project:latest"
-                }
-            }
         }
 
     }
