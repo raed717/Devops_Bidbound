@@ -62,7 +62,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'docker build -t DevOps_Project .'
+                    sh 'docker build -t devops_project .'
                 }
             }
         }       
@@ -70,7 +70,7 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 script {
-                    sh 'docker run -d -p 8085:8085 --name Devops_container DevOps_Project'
+                    sh 'docker run -d -p 8085:8085 --name devops_container devops_project'
                 }
             }
         }
