@@ -6,7 +6,7 @@ pipeline {
             steps {
                 script {
                     echo 'Pulling...'
-                    git branch: 'main', url: 'https://github.com/raed717/Devops_Bidbound.git'
+                    git branch: 'raed', url: 'https://github.com/raed717/Devops_Bidbound.git'
                 }
             }
         }
