@@ -65,7 +65,7 @@ pipeline {
                     sh 'docker build -t devops_project .'
                 }
             }
-        }
+        }*/
 
         stage('Push Docker Image') {
             steps {
@@ -73,7 +73,7 @@ pipeline {
                     sh 'docker push rg123717/devops_project:latest'
                 }
             }
-        }*/
+        }
        
         stage('Run Docker Container') {
             steps {
