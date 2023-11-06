@@ -28,12 +28,7 @@
                 }
             }
         }
-        stage('Build') {
-            steps {
-                sh 'mvn clean install'
-            }
-        }
-        stage('Compile') {
+         stage('Compile') {
          steps {
                     sh 'mvn compile'
             }
@@ -57,6 +52,11 @@
          stage('MVN SONARQUBE') {
             steps {
                 sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=maman'
+            }
+        }
+        stage('Deploy Nexus') {
+            steps {
+                sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://http://192.168.33.10:8081/repository/maven-releases/'
             }
         }
 
