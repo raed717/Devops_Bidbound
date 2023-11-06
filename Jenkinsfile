@@ -2,11 +2,6 @@ pipeline {
     agent any
 
     stages {
-        stage('Clean Workspace') {
-            steps {
-                deleteDir()  // Clean the workspace
-            }
-        }
         stage('Checkout Git') {
             steps {
                 script {
@@ -64,7 +59,29 @@ pipeline {
                 sh 'mvn jacoco:report'
             }
         }
-
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    sh 'docker build -t rg123717/devops_project:latest .'
+                }
+            }
+        }
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    // Authenticate to Docker Hub using your credentials
+                    sh "echo \$Linq2016** | docker login -u \$rg123717 --password-stdin"
+                    sh "docker push rg123717/devops_project:latest"
+                }
+            }
+        }
+        stage('Run Docker Container') {
+            steps {
+                script {
+                    sh 'docker run -d -p 8085:8085 --name devops_container rg123717/devops_project:latest'
+                }
+            }
+        }
 
     }
     post {
