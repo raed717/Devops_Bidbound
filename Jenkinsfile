@@ -33,6 +33,11 @@ pipeline {
                 sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=rg123717'
             }
         }
+        stage('build') {
+            steps {
+                sh 'mvn clean install'
+            }
+        }
         stage('Unit Tests') {
             steps {
                 sh 'mvn test'
