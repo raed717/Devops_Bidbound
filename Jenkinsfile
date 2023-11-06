@@ -26,7 +26,7 @@ pipeline {
         stage('Login to Docker Registry') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'linq2016**', usernameVariable: 'rg123717')]) {
+                    withCredentials([usernamePassword(credentialsId: 'Docker_credential', passwordVariable: 'linq2016**', usernameVariable: 'rg123717')]) {
                     sh "echo $rg123717 | docker login -u $linq2016** --password-stdin"} 
                 }
             }
