@@ -1,9 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'DevOps_Project'
-        }
-    }
+    agent any
 
     stages {
         stage('Checkout Git') {
