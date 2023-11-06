@@ -23,6 +23,11 @@ pipeline {
                 }
             }
         }
+        stage('build') {
+            steps {
+                sh 'mvn clean install'
+            }
+        }
         stage('Compile') {
             steps {
                 sh 'mvn compile'
@@ -31,11 +36,6 @@ pipeline {
         stage('MVN SONARQUBE') {
             steps {
                 sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=rg123717'
-            }
-        }
-        stage('build') {
-            steps {
-                sh 'mvn clean install'
             }
         }
         stage('Unit Tests') {
