@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+     environment {
+        registryCredential = 'Docker_credential'
+    }
+
     stages {
         stage('Checkout Git') {
             steps {
@@ -23,17 +27,6 @@ pipeline {
                 }
             }
         }
-stage('Login to Docker Registry') {
-    steps {
-        script {
-            withCredentials([usernamePassword(credentialsId: 'Docker_credential', passwordVariable: 'Linq2016**', usernameVariable: 'rg123717')]) {
-                sh "echo \$Linq2016** | docker login -u \$rg123717 --password-stdin"
-            }
-        }
-    }
-}
-
-
 
         stage('Compile') {
             steps {
@@ -82,10 +75,12 @@ stage('Login to Docker Registry') {
         stage('Push Docker Image') {
             steps {
                 script {
-                    sh 'docker push rg123717/devops_project:latest'
+                    docker.withRegistry('https://registry-1.docker.io', 'Docker_credential') {
+                    docker.image('rg123717/devops_project:latest').push()}
                 }
             }
         }
+
        
         stage('Run Docker Container') {
             steps {
