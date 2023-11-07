@@ -23,17 +23,15 @@ pipeline {
                 }
             }
         }
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    // Authenticate to Docker Hub using your credentials
-                    sh "echo \$Linq2016** | docker login -u \$rg123717 --password-stdin"
-
-                    // Push the Docker image to Docker Hub
-                    sh "docker push rg123717/devops_project:latest"
-                }
-            }
+stage('Push Docker Image') {
+    steps {
+        withCredentials([string(credentialsId: 'docker-credential', variable: 'DOCKER_PASSWORD')]) {
+            sh "echo \$DOCKER_PASSWORD | docker login -u rg123717 --password-stdin"
+            sh "docker push rg123717/devops_project:latest"
         }
+    }
+}
+
         stage('Compile') {
             steps {
                 sh 'mvn clean compile'
