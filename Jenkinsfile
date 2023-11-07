@@ -11,7 +11,7 @@
             steps {
                 script {
                     echo 'Pulling...'
-                    git branch: 'Firass', url: 'https://github.com/raed717/Devops_Bidbound'
+                    git branch: 'Firass', url: 'https://github.com/raed717/Devops_Bidbound.git'
                 }
             }
         }
