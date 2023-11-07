@@ -32,19 +32,21 @@ stage('Build and Push Docker Image') {
         }
     }
     steps {
-        sh 'docker build -t rg123717/devops_project:latest .'
-        def danglingImages = sh(script: 'docker images -q --filter "dangling=true"', returnStdout: true).trim()
-        
-        if (!danglingImages.isEmpty()) {
-            // Get a list of container IDs using the dangling image
-            def containerIDs = sh(script: "docker ps -a --format '{{.ID}} {{.Image}}' | grep ${danglingImages} | awk '{print \$1}'", returnStdout: true).trim()
+        script {
+            sh 'docker build -t rg123717/devops_project:latest .'
+            def danglingImages = sh(script: 'docker images -q --filter "dangling=true"', returnStdout: true).trim()
+            
+            if (!danglingImages.isEmpty()) {
+                // Get a list of container IDs using the dangling image
+                def containerIDs = sh(script: "docker ps -a --format '{{.ID}} {{.Image}}' | grep ${danglingImages} | awk '{print \$1}'", returnStdout: true).trim()
 
-            // Stop and remove containers using the dangling image
-            sh "docker stop ${containerIDs}"
-            sh "docker rm ${containerIDs}"
+                // Stop and remove containers using the dangling image
+                sh "docker stop ${containerIDs}"
+                sh "docker rm ${containerIDs}"
 
-            // Remove the dangling image
-            sh "docker rmi ${danglingImages}"
+                // Remove the dangling image
+                sh "docker rmi ${danglingImages}"
+            }
         }
 
         withCredentials([string(credentialsId: 'docker-credential', variable: 'DOCKER_PASSWORD')]) {
@@ -53,6 +55,7 @@ stage('Build and Push Docker Image') {
         }
     }
 }
+
 
 
 
