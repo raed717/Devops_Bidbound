@@ -25,11 +25,15 @@ pipeline {
         }
         stage('Build and Push Docker Image') {
             when {
-                changeset '**'
+                expression {
+                def dockerImageExists = sh(script: "docker image ls | grep -q 'rg123717/devops_project'", returnStatus: true)
+                def hasChangeset = currentBuild.changeSets.size() > 0
+                return dockerImageExists != 0 && hasChangeset
+                }
             }
             steps {
-                sh 'docker images -q --filter "dangling=true" | xargs -r docker rmi'
                 sh 'docker build -t rg123717/devops_project:latest .'
+                sh 'docker images -q --filter "dangling=true" | xargs -r docker rmi'
                 withCredentials([string(credentialsId: 'docker-credential', variable: 'DOCKER_PASSWORD')]) {
                     sh "echo \$DOCKER_PASSWORD | docker login -u rg123717 --password-stdin"
                     sh "docker push rg123717/devops_project:latest"
