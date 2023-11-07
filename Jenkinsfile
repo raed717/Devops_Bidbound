@@ -23,8 +23,8 @@ pipeline {
                 }
             }
         }
-        stage('Build and Push Docker Image') {
-        when {
+stage('Build and Push Docker Image') {
+    when {
         expression {
             def dockerImageExists = sh(script: "docker image ls | grep -q 'rg123717/devops_project'", returnStatus: true)
             def hasChangeset = currentBuild.changeSets.size() > 0
@@ -37,7 +37,7 @@ pipeline {
         
         if (!danglingImages.isEmpty()) {
             // Get a list of container IDs using the dangling image
-            def containerIDs = sh(script: "docker ps -a --format '{{.ID}} {{.Image}}' | grep ${danglingImages} | awk '{print $1}'", returnStdout: true).trim()
+            def containerIDs = sh(script: "docker ps -a --format '{{.ID}} {{.Image}}' | grep ${danglingImages} | awk '{print \$1}'", returnStdout: true).trim()
 
             // Stop and remove containers using the dangling image
             sh "docker stop ${containerIDs}"
@@ -53,6 +53,7 @@ pipeline {
         }
     }
 }
+
 
 
         stage('Compile') {
