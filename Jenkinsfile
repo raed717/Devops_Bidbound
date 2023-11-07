@@ -28,10 +28,8 @@ pipeline {
                 changeset '**'
             }
             steps {
-                // Build the Docker image from your updated code
+                sh 'docker images -q --filter "dangling=true" | xargs -r docker rmi'
                 sh 'docker build -t rg123717/devops_project:latest .'
-
-                // Push the updated image to Docker Hub
                 withCredentials([string(credentialsId: 'docker-credential', variable: 'DOCKER_PASSWORD')]) {
                     sh "echo \$DOCKER_PASSWORD | docker login -u rg123717 --password-stdin"
                     sh "docker push rg123717/devops_project:latest"
