@@ -23,41 +23,44 @@ pipeline {
                 }
             }
         }
-stage('Build and Push Docker Image') {
-    when {
-        expression {
-            def dockerImageExists = sh(script: "docker image ls | grep -q 'rg123717/devops_project'", returnStatus: true)
-            def hasChangeset = currentBuild.changeSets.size() > 0
-            return dockerImageExists != 0 || hasChangeset
-        }
-    }
-    steps {
-        script {
-            sh 'docker build -t rg123717/devops_project:latest .'
-            def danglingImages = sh(script: 'docker images -q --filter "dangling=true"', returnStdout: true).trim()
-            
-            if (!danglingImages.isEmpty()) {
-                // Get a list of container IDs using the dangling image
-                def containerIDs = sh(script: "docker ps -a --format '{{.ID}} {{.Image}}' | grep ${danglingImages} | awk '{print \$1}'", returnStdout: true).trim()
+        stage('Build and Push Docker Image') {
+            when {
+                expression {
+                    def dockerImageExists = sh(script: "docker image ls | grep -q 'rg123717/devops_project'", returnStatus: true)
+                    def hasChangeset = currentBuild.changeSets.size() > 0
+                    return dockerImageExists != 0 || hasChangeset
+                }
+            }
+            steps {
+                script {
+                    sh 'docker build -t rg123717/devops_project:latest .'
+                    def danglingImages = sh(script: 'docker images -q --filter "dangling=true"', returnStdout: true).trim()
 
-                // Stop and remove containers using the dangling image
-                sh "docker stop ${containerIDs}"
-                sh "docker rm ${containerIDs}"
+                    if (!danglingImages.isEmpty()) {
+                        // Obtain a list of container IDs using the dangling image
+                        def containerIDs = sh(script: "docker ps -a --format '{{.ID}} {{.Image}}' | grep ${danglingImages} | awk '{print \$1}'", returnStdout: true).trim()
 
-                // Remove the dangling image
-                sh "docker rmi ${danglingImages}"
+                        // Split the container IDs into an array
+                        def containerIDsArray = containerIDs.tokenize()
+
+                        // Stop each container
+                        for (def containerID in containerIDsArray) {
+                            sh "docker stop $containerID"
+                        }
+
+                        // Remove the stopped containers
+                        sh "docker rm ${containerIDsArray.join(' ')}"
+
+                        // Remove the dangling image
+                        sh "docker rmi ${danglingImages}"
+                    }
+                }
+
+            withCredentials([string(credentialsId: 'docker-credential', variable: 'DOCKER_PASSWORD')]) {
+            sh "echo \$DOCKER_PASSWORD | docker login -u rg123717 --password-stdin"
+            sh "docker push rg123717/devops_project:latest"}
             }
         }
-
-        withCredentials([string(credentialsId: 'docker-credential', variable: 'DOCKER_PASSWORD')]) {
-            sh "echo \$DOCKER_PASSWORD | docker login -u rg123717 --password-stdin"
-            sh "docker push rg123717/devops_project:latest"
-        }
-    }
-}
-
-
-
 
         stage('Compile') {
             steps {
