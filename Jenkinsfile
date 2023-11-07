@@ -59,6 +59,18 @@ pipeline {
                 sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8081/repository/maven-releases/'
             }
         }
+        stage('Docker Build and Push') {
+            steps {
+                script {
+                    // Build a Docker image
+                    def customImageName = "rg123717/devops_project:latest"
+                    def dockerImage = docker.build(customImageName, "--file Dockerfile .")
+
+                    // Push the Docker image to a container registry
+                    dockerImage.push()
+                }
+            }
+        }
 
 
     }
