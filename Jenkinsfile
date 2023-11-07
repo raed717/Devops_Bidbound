@@ -28,7 +28,7 @@ pipeline {
                 expression {
                 def dockerImageExists = sh(script: "docker image ls | grep -q 'rg123717/devops_project'", returnStatus: true)
                 def hasChangeset = currentBuild.changeSets.size() > 0
-                return dockerImageExists != 0 && hasChangeset
+                return dockerImageExists != 0 || hasChangeset
                 }
             }
             steps {
