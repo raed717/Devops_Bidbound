@@ -43,13 +43,13 @@ pipeline {
                         // Split the container IDs into an array
                         def containerIDsArray = containerIDs.tokenize()
 
-                        // Stop each container
+                        // Stop and remove each container
                         for (def containerID in containerIDsArray) {
+                            // Stop each container
                             sh "docker stop $containerID"
+                            // Remove the stopped containers
+                            sh "docker rm $containerID"
                         }
-
-                        // Remove the stopped containers
-                        sh "docker rm ${containerIDsArray.join(' ')}"
 
                         // Remove the dangling image
                         sh "docker rmi ${danglingImages}"
