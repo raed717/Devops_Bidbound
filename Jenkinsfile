@@ -33,7 +33,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh 'docker build -t rg123717/devops_project:latest .'
+                    //sh 'docker build -t rg123717/devops_project:latest .'
                     def danglingImages = sh(script: 'docker images -q --filter "dangling=true"', returnStdout: true).trim()
 
                     if (!danglingImages.isEmpty()) {
