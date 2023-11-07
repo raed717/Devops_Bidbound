@@ -23,6 +23,17 @@ pipeline {
                 }
             }
         }
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    // Authenticate to Docker Hub using your credentials
+                    sh "echo \$Linq2016** | docker login -u \$rg123717 --password-stdin"
+
+                    // Push the Docker image to Docker Hub
+                    sh "docker push rg123717/devops_project:latest"
+                }
+            }
+        }
         stage('Compile') {
             steps {
                 sh 'mvn clean compile'
@@ -57,18 +68,6 @@ pipeline {
         stage('Deploy Nexus') {
             steps {
                 sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8081/repository/maven-releases/'
-            }
-        }
-        stage('Docker Build and Push') {
-            steps {
-                script {
-                    // Build a Docker image
-                    def customImageName = "rg123717/devops_project:latest"
-                    def dockerImage = docker.build(customImageName, "--file Dockerfile .")
-
-                    // Push the Docker image to a container registry
-                    dockerImage.push()
-                }
             }
         }
 
