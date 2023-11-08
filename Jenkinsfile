@@ -72,7 +72,11 @@ pipeline {
             sh "docker push rg123717/devops_project:latest"}
             }
         }
-
+        stage('Docker Compose') {
+            steps {   
+                sh 'docker compose up -d'
+            }
+        }
         stage('Compile') {
             steps {
                 sh 'mvn clean compile'
