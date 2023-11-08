@@ -36,8 +36,8 @@ pipeline {
                     // Check if the container is already running
                     def image_name = "rg123717/devops_project"
 
-                    def isContainerRunning = sh(script: "docker ps -q -f ancestor=${image_name}", returnStatus: true)
-                    if (isContainerRunning == 0) {
+                    def isContainerRunning = sh(script: "docker ps -q -f ancestor=${image_name}", returnStatus: true).trim()
+                    if (!runningContainers.isEmpty()) {
                         // Container is already running, stop and remove it
                         sh "docker stop \$(docker ps -q -f ancestor=${image_name})"
                         sh "docker rm \$(docker ps -aq -f ancestor=${image_name})"
