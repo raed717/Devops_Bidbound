@@ -40,5 +40,8 @@ public class Invoice implements Serializable {
     @JsonIgnore
     Supplier supplier;
 
-	
+
+    public boolean isArchived() {
+		return true;
+    }
 }

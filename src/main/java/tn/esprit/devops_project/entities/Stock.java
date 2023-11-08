@@ -14,10 +14,14 @@ import java.util.Set;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Stock implements Serializable {
+    public long getIdStock;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long idStock;
     String title;
     @OneToMany(mappedBy = "stock")
     Set<Product> products;
+
+    public Stock(int i, String s, Set<Product> products) {
+    }
 }
