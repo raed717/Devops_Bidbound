@@ -36,15 +36,8 @@ pipeline {
                     // Check if the container is already running
                     def image_name = "rg123717/devops_project"
 
-                    def isContainerRunning = sh(script: "docker ps -q -f ancestor=${image_name}", returnStatus: true)
-                    if (isContainerRunning == 0) {
-                        // Container is already running, stop and remove it
-                        //sh "docker stop \$(docker ps -q -f ancestor=${image_name})"
-                        //sh "docker rm \$(docker ps -aq -f ancestor=${image_name})"
-                    }
 
                     sh 'docker build -t rg123717/devops_project:latest .'
-                    //sh 'docker run -d -p 8085:8085 rg123717/devops_project'
 
                     def danglingImages = sh(script: 'docker images -q --filter "dangling=true"', returnStdout: true).trim()
                     if (!danglingImages.isEmpty()) {
@@ -79,8 +72,6 @@ pipeline {
         }
         stage('Docker Compose') {
             steps {
-                sh 'docker compose up -d'
-                sh 'docker compose down'
                 sh 'docker compose up -d'    
             }
         }
@@ -94,7 +85,6 @@ pipeline {
                 sh 'mvn clean compile'
             }
         }
-        /* 
         stage('Unit Tests') {
             steps {
                 sh 'mvn test'
@@ -125,9 +115,7 @@ pipeline {
             steps {
                 sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8081/repository/maven-releases/'
             }
-        }*/
-
-
+        }
     }
     post {
         always {
