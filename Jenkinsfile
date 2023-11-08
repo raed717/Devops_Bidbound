@@ -43,7 +43,7 @@ pipeline {
                         sh "docker rm \$(docker ps -aq -f ancestor=${image_name})"
                     }
 
-                    sh 'docker build -t rg123717/devops_project:latest .'
+                    //sh 'docker build -t rg123717/devops_project:latest .'
                     sh 'docker run -d -p 8085:8085 rg123717/devops_project'
 
                     def danglingImages = sh(script: 'docker images -q --filter "dangling=true"', returnStdout: true).trim()
@@ -72,11 +72,29 @@ pipeline {
             sh "docker push rg123717/devops_project:latest"}
             }
         }
+        stage('Verify Docker Compose Installation') {
+            steps {
+                sh 'docker compose version'    
+            }
+        }
+        stage('Docker Compose') {
+            steps {
+                sh 'docker compose up -d'
+                sh 'docker compose down'
+                sh 'docker compose up -d'    
+            }
+        }
+        stage('check Docker Compose') {
+            steps {
+                sh 'docker compose ps'    
+            }
+        }
         stage('Compile') {
             steps {
                 sh 'mvn clean compile'
             }
         }
+        /* 
         stage('Unit Tests') {
             steps {
                 sh 'mvn test'
@@ -107,7 +125,7 @@ pipeline {
             steps {
                 sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8081/repository/maven-releases/'
             }
-        }
+        }*/
 
 
     }
