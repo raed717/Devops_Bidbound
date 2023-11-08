@@ -1,8 +1,7 @@
  pipeline {
     agent any
 
-    environment {
-                DOCKERHUB_CREDENTIALS=credentials('dockerhubpwd')    }
+
 
     stages {
         stage('Checkout Git') {
@@ -46,13 +45,18 @@
                 }
                 }
                  }
-         stage('Push docker image') {
-                    steps {
-                        sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW --password-stdin docker.io'
+
+
+
+            stage('Push Docker Image') {
+                steps {
+                    script {
+                        withCredentials([usernamePassword(credentialsId: 'dockerhubpwd', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                            sh "echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin docker.io"
+                        }
                         sh 'docker push firasyazid12/devops_project_firas:test'
                     }
                 }
-
 
 
     }
