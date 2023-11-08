@@ -35,16 +35,27 @@
             }
         }
 
-       
+
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'docker build -t my-app:v1.0 .'
+                    sh 'docker build -t firasyazid12/devops_project:latest.'
+
                 }
             }
         }
 
+          stage('Push image to Hub'){
+                        steps{
+                            script{
+                               withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'dockerhubpwd')]) {
+                               sh 'docker login -u firasyazid12 -p ${dockerhubpwd}'
 
+            }
+                               sh 'docker push firasyazid12/devops-integration'
+                            }
+                        }
+                    }
 
 
 
