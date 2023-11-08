@@ -51,15 +51,14 @@
             stage('Push Docker Image') {
                 steps {
                     script {
-                        withCredentials([usernamePassword(credentialsId: 'dockerhubpwd', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
-                            sh "echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin docker.io"
+                        withCredentials([usernamePassword(credentialsId: 'dockerhubpwd', variable: 'DOCKER_PASSWORD')]) {
+                        sh "echo \$DOCKER_PASSWORD | docker login -u firasyazid12 --password-stdin"
                         }
                         sh 'docker push firasyazid12/devops_project_firas:test'
                     }
                 }
 
 
-    }
 
        post {
             always {
