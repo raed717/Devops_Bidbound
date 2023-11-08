@@ -17,7 +17,7 @@ services:
 
   spring-app:
     image: rg123717/devops_project:latest
-    container_name: springvalidation
+    container_name: springapplication
     ports:
       - "8085:8085"
     depends_on:
