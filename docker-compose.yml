@@ -16,7 +16,7 @@ services:
       - app-network
 
   spring-app:
-    image: rg123717/devops_project:latest
+    image: firasyazid12/devops_project_firas:test
     container_name: devosapp
     ports:
       - "8085:8085"
