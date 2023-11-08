@@ -26,6 +26,15 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/devops
 
+  angular-app:
+    image: mensiahana/devops:fronthana
+    ports:
+      - "4200:4200"
+    depends_on:
+      - spring-app
+    networks:
+      - app-network
+
 volumes:
   mysql_data:
   mysql_config:
