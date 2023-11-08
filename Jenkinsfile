@@ -49,7 +49,7 @@
          stage('Push docker image') {
                     steps {
                         sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW --password-stdin docker.io'
-                        sh 'docker push firasyazid12/devops_project_firas'
+                        sh 'docker push firasyazid12/devops_project_firas:test'
                     }
                 }
 
