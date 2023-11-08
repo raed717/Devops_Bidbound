@@ -33,6 +33,11 @@ pipeline {
             }
             steps {
                 script {
+                    def containerRunning = sh(script: "docker ps -q -f 'ancestor=rg123717/devops_project'", returnStatus: true)
+                    if (containerRunning == 0) {
+                        sh "docker stop rg123717_container"
+                        sh "docker rm rg123717_container"
+                    }
                     //sh 'docker build -t rg123717/devops_project:latest .'
                     sh 'docker run -d -p 8085:8085 rg123717/devops_project'
 
