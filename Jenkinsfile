@@ -57,7 +57,7 @@
                         sh 'docker push firasyazid12/devops_project_firas:test'
                     }
                 }
-
+                        }
 
 
        post {
