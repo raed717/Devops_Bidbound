@@ -2,7 +2,7 @@ version: '3.3'
 services:
   mysql:
     image: mysql:5.7
-    container_name: mysql
+    container_name: mysqlvalidation
     ports:
       - "3306:3306"
     environment:
@@ -17,6 +17,7 @@ services:
 
   spring-app:
     image: mensiahana/devops:latest
+    container_name: springvalidation
     ports:
       - "8085:8085"
     depends_on:
@@ -25,7 +26,6 @@ services:
       - app-network
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/devops
-
   angular-app:
     image: mensiahana/devops:fronthana
     ports:
@@ -34,7 +34,6 @@ services:
       - spring-app
     networks:
       - app-network
-
 volumes:
   mysql_data:
   mysql_config:
