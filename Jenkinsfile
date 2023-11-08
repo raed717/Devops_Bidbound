@@ -39,8 +39,9 @@
         stage('Build Docker Image') {
             steps {
                 script {
-                sh 'docker build -t firasyazid12/devops_project_firas:test -f  Dockerfile .'
+            sh 'docker build -t firasyazid12/devops_project_firas:test -f "C:\\Users\\firas\\OneDrive\\Desktop\\Devops_Bidbound\\Dockerfile" "C:\\Users\\firas\\OneDrive\\Desktop\\Devops_Bidbound"'
                 }
+                 }
 
                 }
             }
