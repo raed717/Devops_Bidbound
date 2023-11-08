@@ -43,12 +43,10 @@ pipeline {
                         sh "docker rm \$(docker ps -aq -f ancestor=${image_name})"
                     }
 
-
-                    //sh 'docker build -t rg123717/devops_project:latest .'
+                    sh 'docker build -t rg123717/devops_project:latest .'
                     sh 'docker run -d -p 8085:8085 rg123717/devops_project'
 
                     def danglingImages = sh(script: 'docker images -q --filter "dangling=true"', returnStdout: true).trim()
-
                     if (!danglingImages.isEmpty()) {
                         // Obtain a list of container IDs using the dangling image
                         def containerIDs = sh(script: "docker ps -a --format '{{.ID}} {{.Image}}' | grep ${danglingImages} | awk '{print \$1}'", returnStdout: true).trim()
