@@ -34,13 +34,16 @@ pipeline {
             steps {
                 script {
                     // Check if the container is already running
-                    def isContainerRunning = sh(script: "docker ps -q -f name=devops_project", returnStatus: true)
+                    def image_name = "rg123717/devops_project"
+
+                    def isContainerRunning = sh(script: "docker ps -q -f ancestor=${image_name}", returnStatus: true)
                     if (isContainerRunning == 0) {
-                        // Container is already running, stop it
-                        sh 'docker stop devops_project'
-                        sh 'docker rm devops_project'
+                        // Container is already running, stop and remove it
+                        sh "docker stop \$(docker ps -q -f ancestor=${image_name})"
+                        sh "docker rm \$(docker ps -aq -f ancestor=${image_name})"
                     }
-                    
+
+
                     //sh 'docker build -t rg123717/devops_project:latest .'
                     sh 'docker run -d -p 8085:8085 rg123717/devops_project'
 
