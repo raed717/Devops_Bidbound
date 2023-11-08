@@ -56,13 +56,7 @@
                     }
                 }
 
-             stage('Docker Build') {
-                      steps {
-                           script {
-                              def dockerImage = docker.build("devops_project", "-f Dockerfile .")
-                          }
-                      }
-                  }
+
 
 
     }
