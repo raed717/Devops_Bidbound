@@ -39,8 +39,8 @@
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'docker build -t my-app:v1.0 .'
-                    
+                    sh 'docker build -t firasyazid12/devops_project_firas:test.'
+
                 }
             }
         }
