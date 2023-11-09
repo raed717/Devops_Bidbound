@@ -59,6 +59,24 @@
                           }
                                   }
 
+                stage('Verify Docker Compose Installation') {
+                                steps {
+                                    sh 'docker compose version'
+                                }
+                            }
+                            stage('Docker Compose') {
+                                steps {
+                                    sh 'docker compose up -d'
+                                }
+                            }
+                            stage('check Docker Compose') {
+                                steps {
+                                    sh 'docker compose ps'
+                                }
+                            }
+
+
+
 
     }
 
