@@ -4,7 +4,7 @@ services:
 
   nexus:
     image: sonatype/nexus3:latest
-    container_name: nexus_container1
+
     ports:
        - "8082:8082"
     networks:
@@ -12,7 +12,7 @@ services:
 
   sonarqube:
       image: sonarqube:latest
-      container_name: sonarqube_container1
+
       ports:
          - "9093:9093"
       networks:
@@ -20,7 +20,7 @@ services:
 
   mysql:
     image: mysql:latest
-    container_name:  mysql_container1
+
     ports:
       - "3306:3306"
     environment:
@@ -35,7 +35,7 @@ services:
 
   spring-app:
     image: firasyazid12/devops_project_firas:test
-    container_name: devosapp1
+
     ports:
       - "8085:8085"
     depends_on:
