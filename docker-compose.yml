@@ -6,8 +6,7 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD:
-      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_ROOT_PASSWORD: brandlvl1
       MYSQL_DATABASE: devops
     volumes:
       - mysql_data:/var/lib/mysql
@@ -16,7 +15,7 @@ services:
       - app-network
 
   spring-app:
-    image: rg123717/devops_project:latest
+    image: ihebsaidi/iheb-image:latest
     container_name: springapplication
     ports:
       - "8085:8085"
