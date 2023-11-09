@@ -48,9 +48,9 @@
 
 
 
-               stage('Push Docker Image') {
-                          steps {
-                              script {
+        stage('Push Docker Image') {
+               steps {
+                script {
                         withCredentials([usernamePassword(credentialsId: 'dockerhubpwd', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                                   sh "echo \$DOCKER_PASSWORD | docker login -u firasyazid12 --password-stdin"
                                   }
@@ -59,14 +59,17 @@
                           }
                                   }
 
-                stage('Verify Docker Compose Installation') {
-                                steps {
-                                    sh 'docker compose version'
+
+
+        stage('Verify Docker Compose Installation') {
+                 steps {
+                                sh 'docker compose version'
                                 }
                             }
                             stage('Docker Compose') {
                                 steps {
-                                    sh 'docker compose up -d'
+                                    sh 'docker compose -p devops_project_firas up -d'
+
                                 }
                             }
                             stage('check Docker Compose') {
@@ -80,11 +83,13 @@
 
     }
 
-       post {
-            always {
-                cleanWs()
-            }
-        }
+      post {
+              always {
+                  script {
+                       sh 'docker compose down'
+                  }
+              }
+          }
 
 
 }
