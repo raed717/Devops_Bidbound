@@ -31,6 +31,25 @@
             }
         }
 
+stage('Push Docker Image') {
+    steps {
+        script {
+            // Check if the Docker image already exists locally
+            def dockerImageExists = sh(script: 'docker images -q firasyazid12/devops_project_firas:test', returnStatus: true) == 0
+
+            if (!dockerImageExists) {
+                // Build the Docker image if it doesn't exist
+                sh 'docker build -t firasyazid12/devops_project_firas:test -f  Dockerfile .'
+            }
+
+            // Log in to Docker Hub and push the image
+            withCredentials([usernamePassword(credentialsId: 'dockerhubpwd', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                sh "echo \$DOCKER_PASSWORD | docker login -u firasyazid12 --password-stdin"
+                sh 'docker push firasyazid12/devops_project_firas:test'
+            }
+        }
+    }
+}
 
 
 
