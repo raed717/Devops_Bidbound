@@ -58,6 +58,13 @@
                             }
                         }
 
+ stage('Build Docker Image') {
+            steps {
+                script {
+                    sh 'docker build -t my-app:v1.0 .'
+                }
+            }
+        }
                 stage('Deploy Docker hub') {
                     steps {
                         script {
