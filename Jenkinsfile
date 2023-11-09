@@ -35,7 +35,7 @@
                     sh 'mvn test'
                 }
             }
-        stage('Generate JaCoCo Coverage Report') {
+        stage('JaCoCo Coverage Report') {
              steps {
                   sh 'mvn jacoco:report'
                     }
@@ -47,18 +47,18 @@
                             }
                         }
 
-        stage('MVN SONARQUBE') {
+        stage('SONARQUBE') {
                   steps {
                       sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=maman'
                   }
               }
-         stage('Deploy Nexus') {
+         stage('Publish Nexus') {
                       steps {
                         sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8081/repository/maven-releases/'
                             }
                         }
 
-                stage('Push Docker Image') {
+                stage('Deploy Docker hub') {
                     steps {
                         script {
                              def dockerImageExists = sh(script: 'docker images -q firasyazid12/devops_project_firas:test', returnStatus: true) == 0
