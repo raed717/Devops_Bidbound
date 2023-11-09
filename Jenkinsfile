@@ -30,23 +30,49 @@
                     sh 'mvn clean compile'
             }
         }
-
-stage('Push Docker Image') {
-    steps {
-        script {
-             def dockerImageExists = sh(script: 'docker images -q firasyazid12/devops_project_firas:test', returnStatus: true) == 0
-
-            if (!dockerImageExists) {
-                sh 'docker build -t firasyazid12/devops_project_firas:test -f  Dockerfile .'
-            }
-
-             withCredentials([usernamePassword(credentialsId: 'dockerhubpwd', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                sh "echo \$DOCKER_PASSWORD | docker login -u firasyazid12 --password-stdin"
-                sh 'docker push firasyazid12/devops_project_firas:test'
+ stage('JUnit Tests') {
+            steps {
+                sh 'mvn test'
             }
         }
-    }
-}
+        stage('Generate JaCoCo Coverage Report') {
+             steps {
+                  sh 'mvn jacoco:report'
+                    }
+                }
+
+        stage('artifact construction') {
+                    steps {
+                          sh 'mvn package'
+                            }
+                        }
+
+        stage('MVN SONARQUBE') {
+                                    steps {
+                                        sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=maman'
+                                    }
+                                }
+                       steps {
+                              sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8081/repository/maven-releases/'
+                                                    }
+                                                }
+
+                stage('Push Docker Image') {
+                    steps {
+                        script {
+                             def dockerImageExists = sh(script: 'docker images -q firasyazid12/devops_project_firas:test', returnStatus: true) == 0
+
+                            if (!dockerImageExists) {
+                                sh 'docker build -t firasyazid12/devops_project_firas:test -f  Dockerfile .'
+                            }
+
+                             withCredentials([usernamePassword(credentialsId: 'dockerhubpwd', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                                sh "echo \$DOCKER_PASSWORD | docker login -u firasyazid12 --password-stdin"
+                                sh 'docker push firasyazid12/devops_project_firas:test'
+                            }
+                        }
+                    }
+                }
 
 
 
