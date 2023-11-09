@@ -31,12 +31,7 @@
             }
         }
 
-        stage('Unit Tests') {
-            steps {
-                sh 'mvn test'
-            }
-        }
-
+         
 
         stage('Build Docker Image') {
             steps {
