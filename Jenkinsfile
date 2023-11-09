@@ -47,15 +47,16 @@
                             }
                         }
 
-        stage('MVN SONARQUBE') {
-                                    steps {
-                                        sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=maman'
-                                    }
-                                }
-                       steps {
-                              sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8081/repository/maven-releases/'
-                                                    }
-
+    stage('MVN SONARQUBE') {
+              steps {
+                  sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=maman'
+              }
+          }
+ stage('Deploy Nexus') {
+              steps {
+                sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8081/repository/maven-releases/'
+                    }
+                }
 
                 stage('Push Docker Image') {
                     steps {
