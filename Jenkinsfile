@@ -43,7 +43,7 @@
                             }
                             stage('Docker Compose') {
                                 steps {
-                                    sh 'docker compose -p devops_project_firas up -d'
+                                    sh 'docker compose -p project_firas up -d'
 
                                 }
                             }
