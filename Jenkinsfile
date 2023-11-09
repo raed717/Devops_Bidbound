@@ -30,11 +30,11 @@
                     sh 'mvn clean compile'
             }
         }
- stage('JUnit Tests') {
-            steps {
-                sh 'mvn test'
+     stage('JUnit Tests') {
+                steps {
+                    sh 'mvn test'
+                }
             }
-        }
         stage('Generate JaCoCo Coverage Report') {
              steps {
                   sh 'mvn jacoco:report'
@@ -47,16 +47,16 @@
                             }
                         }
 
-    stage('MVN SONARQUBE') {
-              steps {
-                  sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=maman'
+        stage('MVN SONARQUBE') {
+                  steps {
+                      sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=maman'
+                  }
               }
-          }
- stage('Deploy Nexus') {
-              steps {
-                sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8081/repository/maven-releases/'
-                    }
-                }
+         stage('Deploy Nexus') {
+                      steps {
+                        sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8081/repository/maven-releases/'
+                            }
+                        }
 
                 stage('Push Docker Image') {
                     steps {
