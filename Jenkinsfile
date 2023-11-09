@@ -55,7 +55,7 @@
                        steps {
                               sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8081/repository/maven-releases/'
                                                     }
-                                                }
+
 
                 stage('Push Docker Image') {
                     steps {
