@@ -6,8 +6,8 @@ services:
     image: sonatype/nexus3:latest
     container_name: nexus_container
     ports:
-      - "8081:8081"
-      - "9093:8085"
+      - "8089:8088"
+
     networks:
       - app-network
 
@@ -15,8 +15,7 @@ services:
       image: sonarqube:latest
       container_name: sonarqube_container
       ports:
-        - "9000:9000"
-        - "9092:9096"
+         - "9092:9096"
       networks:
         - app-network
 
