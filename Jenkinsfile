@@ -30,6 +30,13 @@
                     sh 'mvn clean compile'
             }
         }
+
+
+    stage('SONARQUBE') {
+                          steps {
+                              sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=maman'
+                          }
+                      }
          stage('JUnit Tests') {
                 steps {
                     sh 'mvn test'
@@ -41,11 +48,7 @@
                   sh 'mvn jacoco:report'
                     }
                 }
-    stage('SONARQUBE') {
-                      steps {
-                          sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=maman'
-                      }
-                  }
+
 
     stage('artifact construction') {
                     steps {
