@@ -35,11 +35,17 @@
                     sh 'mvn test'
                 }
             }
+
     stage('JaCoCo Coverage Report') {
              steps {
                   sh 'mvn jacoco:report'
                     }
                 }
+    stage('SONARQUBE') {
+                      steps {
+                          sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=maman'
+                      }
+                  }
 
     stage('artifact construction') {
                     steps {
@@ -47,11 +53,7 @@
                             }
                         }
 
-    stage('SONARQUBE') {
-                  steps {
-                      sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=maman'
-                  }
-              }
+
     stage('Publish Nexus') {
                       steps {
                         sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8081/repository/maven-releases/'
