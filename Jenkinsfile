@@ -25,47 +25,47 @@
                 }
             }
         }
-         stage('Compile') {
-         steps {
+    stage('Compile') {
+           steps {
                     sh 'mvn clean compile'
             }
         }
-     stage('JUnit Tests') {
+         stage('JUnit Tests') {
                 steps {
                     sh 'mvn test'
                 }
             }
-        stage('JaCoCo Coverage Report') {
+    stage('JaCoCo Coverage Report') {
              steps {
                   sh 'mvn jacoco:report'
                     }
                 }
 
-        stage('artifact construction') {
+    stage('artifact construction') {
                     steps {
                           sh 'mvn package'
                             }
                         }
 
-        stage('SONARQUBE') {
+    stage('SONARQUBE') {
                   steps {
                       sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=maman'
                   }
               }
-         stage('Publish Nexus') {
+    stage('Publish Nexus') {
                       steps {
                         sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8081/repository/maven-releases/'
                             }
                         }
 
- stage('Build Docker Image') {
+    stage('Build Docker Image') {
             steps {
                 script {
                     sh 'docker build -t my-app:v1.0 .'
                 }
             }
         }
-                stage('Deploy Docker hub') {
+    stage('Deploy Docker hub') {
                     steps {
                         script {
                              def dockerImageExists = sh(script: 'docker images -q firasyazid12/devops_project_firas:test', returnStatus: true) == 0
@@ -86,7 +86,7 @@
 
 
 
-        stage('Verify Docker Compose Installation') {
+    stage('Verify Docker Compose Installation') {
                  steps {
                                 sh 'docker compose version'
                                 }
