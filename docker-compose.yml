@@ -20,7 +20,7 @@ services:
 
   mysql:
     image: mysql:latest
-    container_name:  mysql_container
+    container_name:  mysql_container1
     ports:
       - "3306:3306"
     environment:
@@ -34,8 +34,8 @@ services:
       - app-network
 
   spring-app:
-    image: firasyazid12/devops_project_firas:test
-    container_name: devosapp
+    image: firasyazid12/devops_project_firass:test
+    container_name: devosapp1
     ports:
       - "8085:8085"
     depends_on:
