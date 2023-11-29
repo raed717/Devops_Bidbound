@@ -55,7 +55,7 @@ pipeline {
         }
         stage('MVN SONARQUBE') {
             steps {
-                sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=rg123717'
+                sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=rg123717 -Dsonar.host.url=http://localhost:8081'
             }
         }
         stage('Integration Tests') {
