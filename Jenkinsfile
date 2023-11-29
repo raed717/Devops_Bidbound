@@ -25,7 +25,7 @@ pipeline {
         }
         stage('Verify Docker Compose Installation') {
             steps {
-                sh 'sudo docker compose version'    
+                sh 'docker compose version'    
             }
         }
         stage('Docker Compose') {
