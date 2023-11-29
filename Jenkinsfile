@@ -23,48 +23,6 @@ pipeline {
                 }
             }
         }
-        stage('Build and Push Docker Image') {
-            when {
-                expression {
-                    def dockerImageExists = sh(script: "docker image ls | grep -q 'rg123717/devops_project'", returnStatus: true)
-                    def hasChangeset = currentBuild.changeSets.size() > 0
-                    return dockerImageExists != 0 || hasChangeset
-                }
-            }
-            steps {
-                script {
-                    // Check if the container is already running
-                    def image_name = "rg123717/devops_project"
-
-
-                    sh 'docker build -t rg123717/devops_project:latest .'
-
-                    def danglingImages = sh(script: 'docker images -q --filter "dangling=true"', returnStdout: true).trim()
-                    if (!danglingImages.isEmpty()) {
-                        // Obtain a list of container IDs using the dangling image
-                        def containerIDs = sh(script: "docker ps -a --format '{{.ID}} {{.Image}}' | grep ${danglingImages} | awk '{print \$1}'", returnStdout: true).trim()
-
-                        // Split the container IDs into an array
-                        def containerIDsArray = containerIDs.tokenize()
-
-                        // Stop and remove each container
-                        for (def containerID in containerIDsArray) {
-                            // Stop each container
-                            sh "docker stop $containerID"
-                            // Remove the stopped containers
-                            sh "docker rm $containerID"
-                        }
-
-                        // Remove the dangling image
-                        sh "docker rmi ${danglingImages}"
-                    }
-                }
-
-            withCredentials([string(credentialsId: 'docker-credential', variable: 'DOCKER_PASSWORD')]) {
-            sh "echo \$DOCKER_PASSWORD | docker login -u rg123717 --password-stdin"
-            sh "docker push rg123717/devops_project:latest"}
-            }
-        }
         stage('Verify Docker Compose Installation') {
             steps {
                 sh 'docker compose version'    
@@ -115,6 +73,48 @@ pipeline {
             steps {
                 sh 'mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://192.168.33.10:8081/repository/maven-releases/'
             }
+        }
+        stage('Build and Push Docker Image') {
+                    when {
+                        expression {
+                            def dockerImageExists = sh(script: "docker image ls | grep -q 'rg123717/devops_project'", returnStatus: true)
+                            def hasChangeset = currentBuild.changeSets.size() > 0
+                            return dockerImageExists != 0 || hasChangeset
+                        }
+                    }
+                    steps {
+                        script {
+                            // Check if the container is already running
+                            def image_name = "rg123717/devops_project"
+
+
+                            sh 'docker build -t rg123717/devops_project:latest .'
+
+                            def danglingImages = sh(script: 'docker images -q --filter "dangling=true"', returnStdout: true).trim()
+                            if (!danglingImages.isEmpty()) {
+                                // Obtain a list of container IDs using the dangling image
+                                def containerIDs = sh(script: "docker ps -a --format '{{.ID}} {{.Image}}' | grep ${danglingImages} | awk '{print \$1}'", returnStdout: true).trim()
+
+                                // Split the container IDs into an array
+                                def containerIDsArray = containerIDs.tokenize()
+
+                                // Stop and remove each container
+                                for (def containerID in containerIDsArray) {
+                                    // Stop each container
+                                    sh "docker stop $containerID"
+                                    // Remove the stopped containers
+                                    sh "docker rm $containerID"
+                                }
+
+                                // Remove the dangling image
+                                sh "docker rmi ${danglingImages}"
+                            }
+                        }
+
+                    withCredentials([string(credentialsId: 'docker-credential', variable: 'DOCKER_PASSWORD')]) {
+                    sh "echo \$DOCKER_PASSWORD | docker login -u rg123717 --password-stdin"
+                    sh "docker push rg123717/devops_project:latest"}
+                    }
         }
     }
     post {
